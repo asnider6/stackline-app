@@ -14,7 +14,7 @@ const ProductInfo = ({ data }: ProductInfoProps) => {
       </div>
       <div style={styles.tagsContainer}>
         {data.tags.map((tag) => {
-          return (<div style={styles.tag}>{tag}</div>)
+          return (<div key={tag} style={styles.tag}>{tag}</div>)
         })}
       </div>
     </div>
