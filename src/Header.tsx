@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from './assets/logo.svg'; // Adjust path if necessary
+import logo from './assets/logo.svg';
 
-const Header: React.FC = () => {
+const Header = () => {
   return (
     <header style={styles.header}>
       <div style={styles.logoContainer}>
@@ -13,22 +13,22 @@ const Header: React.FC = () => {
 
 const styles = {
   header: {
-    display: 'flex',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    height: '50px',
-    backgroundColor: '#000055',
-    padding: '0 20px',
-    color: 'white',
+    display: "flex",
+    width: "100%",
+    "align-items": "center",
+    "justify-content": "flex-start",
+    height: "50px",
+    "background-color": "#102747",
+    padding: "0 20px",
+    color: "white",
   },
   logoContainer: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    "align-items": "center",
   },
   logo: {
-    width: '40px',
-    height: '40px',
+    width: "50px",
+    height: "50px",
   },
 };
 

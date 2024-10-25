@@ -5,6 +5,7 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
 
@@ -13,38 +14,44 @@ interface SalesDataProps {
   salesData: SalesDataInterface[];
 }
 
-function convertCentsToDollars(cents: number) {
-  const dollars = Math.floor(cents / 100); // Get the whole dollar amount
-  const remaining = cents - dollars * 100;
-  const remainingCents = remaining % 100; // Get the remaining cents
-  return `$${dollars}.${remainingCents}`;
+function formatDollars(amount: number): string {
+  return `$${Math.floor(amount)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 }
 
 const columnHelper = createColumnHelper<SalesDataInterface>();
 const columns = [
-  columnHelper.accessor('weekEnding', {
-    cell: info => info.getValue(),
-    header: () => 'Week Ending',
+  columnHelper.accessor("weekEnding", {
+    cell: (info) => (
+      <div style={styles.row}>{info.getValue()}</div>
+    ),
+    header: () => "Week Ending",
   }),
-  columnHelper.accessor('retailSales', {
-    cell: info => convertCentsToDollars(info.getValue()),
-    header: () => 'Retail Sales',
+  columnHelper.accessor("retailSales", {
+    cell: (info) => (
+      <div style={styles.row}>{formatDollars(info.getValue())}</div>
+    ),
+    header: () => "Retail Sales",
   }),
-  columnHelper.accessor('retailerMargin', {
-    cell: info => convertCentsToDollars(info.getValue()),
-    header: () => 'Retailer Margin',
+  columnHelper.accessor("retailerMargin", {
+    cell: (info) => (
+      <div style={styles.row}>{formatDollars(info.getValue())}</div>
+    ),
+    header: () => "Retailer Margin",
   }),
-  columnHelper.accessor('unitsSold', {
-    cell: info => info.getValue(),
-    header: () => 'Units Sold',
+  columnHelper.accessor("unitsSold", {
+    cell: (info) => <div style={styles.row}>{info.getValue()}</div>,
+    header: () => "Units Sold",
   }),
-  columnHelper.accessor('wholesaleSales', {
-    cell: info => convertCentsToDollars(info.getValue()),
-    header: () => 'Wholesale Sales',
+  columnHelper.accessor("wholesaleSales", {
+    cell: (info) => (
+      <div style={styles.row}>{formatDollars(info.getValue())}</div>
+    ),
+    header: () => "Wholesale Sales",
   }),
-  ]
+];
 
-  
 function SalesData({salesData}: SalesDataProps) {
   const [data, _setData] = React.useState(() => [...salesData])
 
@@ -52,12 +59,12 @@ function SalesData({salesData}: SalesDataProps) {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-  })
+    getSortedRowModel: getSortedRowModel(),
+  });
 
   return (
-    <div >
-      <table>
-        <thead>
+      <table style={styles.table}>
+        <thead style={styles.row}>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => (
@@ -75,35 +82,36 @@ function SalesData({salesData}: SalesDataProps) {
         </thead>
         <tbody>
           {table.getRowModel().rows.map(row => (
-            <tr key={row.id}>
+            <tr style={styles.row} key={row.id}>
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id}>
+                <td style={styles.cell} key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
             </tr>
           ))}
         </tbody>
-        <tfoot>
-          {table.getFooterGroups().map(footerGroup => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map(header => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
       </table>
-      <div className="h-4" />
-    </div>
   )
+}
+
+const styles = {
+  table: {
+    margin: "2rem",
+    padding: "1rem",
+    width: "100%",
+    "background-color": "white",
+    "border-radius": "6px",
+  },
+  row: {
+    "border-bottom": "1px solid #eee"
+  },
+  cell: {
+    "text-align": "center",
+    margin: "0 auto",
+    color: "#aaa",
+    padding: "0.5rem"
+  }
 }
 
 export default SalesData;
