@@ -44,8 +44,8 @@ const styles = {
     width: "10rem",
   },
   title: {
-    "font-size": "2rem",
-    "font-weight": "bold",
+    fontSize: "2rem",
+    fontWeight: "bold",
   },
   subtitle: {
     "text-align": "center",

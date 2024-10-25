@@ -1,4 +1,3 @@
-import React from 'react';
 import { SalesDataInterface } from './types';
 
 import {
@@ -53,7 +52,7 @@ const columns = [
 ];
 
 function SalesData({salesData}: SalesDataProps) {
-  const [data, _setData] = React.useState(() => [...salesData])
+  const data = [...salesData];
 
   const table = useReactTable({
     data,
@@ -100,11 +99,11 @@ const styles = {
     margin: "2rem",
     padding: "1rem",
     width: "100%",
-    "background-color": "white",
-    "border-radius": "6px",
+    backgroundColor: "white",
+    borderRadius: "6px",
   },
   row: {
-    "border-bottom": "1px solid #eee"
+    borderBottom: "1px solid #eee"
   },
   cell: {
     "text-align": "center",
